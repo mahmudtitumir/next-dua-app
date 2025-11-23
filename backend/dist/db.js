@@ -1,18 +1,16 @@
 import sqlite3 from 'sqlite3';
-import { open, Database } from 'sqlite';
+import { open } from 'sqlite';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
-
-export let db: Database<sqlite3.Database, sqlite3.Statement>;
+export let db;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-async function initalizedb(): Promise<void> {
-  db = await open({
-    filename: path.join(__dirname, '..', 'database.sqlite'),
-    driver: sqlite3.Database,
-  });
-  await db.exec(`
+async function initalizedb() {
+    db = await open({
+        filename: path.join(__dirname, '..', 'database.sqlite'),
+        driver: sqlite3.Database,
+    });
+    await db.exec(`
     CREATE TABLE IF NOT EXISTS categories (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
@@ -40,5 +38,4 @@ async function initalizedb(): Promise<void> {
     );
   `);
 }
-
 export default initalizedb;
